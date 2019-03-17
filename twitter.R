@@ -3,6 +3,7 @@ library(RCurl)
 library(tm)
 library(wordcloud)
 library(data.table)
+library(stringr)
 #
 rm(list=ls())
 consumer_kay <- "7X1wE3SrzfEyregXm9v6eMrdO"
@@ -29,8 +30,12 @@ him_clean <- tm_map(him_clean,content_transformer(tolower))
 him_clean <- tm_map(him_clean,removeWords,stopwords("english"))
 him_clean <- tm_map(him_clean,removeNumbers)
 him_clean <- tm_map(him_clean,stripWhitespace)
+him_clean <- tm_map(him_clean,removeWords,c("#","@","[0-9]*","https://[A-Z[a-z]*","@[A-Z][a-z]*"))
+str_split(him_clean,pattern="\\s+")
 head(inspect(him_corpus))
+
 #
 # Remove some words
 #
-wordcloud(him_clean)
+wordcloud(him_clean,col=rainbow(10),min.freq=4,random.order = FALSE)
+
